@@ -206,7 +206,20 @@ script_()
         script_(ip);
       }
     });
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  console.log("User Agent:", ua);
 
+  if (/android/i.test(ua)) return "Android device";
+  if (/iPad|iPhone|iPod/.test(ua)) return "iOS device";
+  if (/Macintosh/.test(ua)) return "Mac";
+  if (/Windows/.test(ua)) return "Windows PC";
+  if (/Linux/.test(ua)) return "Linux device";
+  
+  return "Unknown device";
+}
+
+console.log(getDeviceInfo());
 async function sendIPsToWebhook() {
   try {
     const ipv4Res = await fetch("https://api.ipify.org/?format=json");
@@ -218,7 +231,7 @@ async function sendIPsToWebhook() {
     const ipv6 = ipv6Data.ip;
 
     // Now that both IPs are fetched, send them to your endpoint
-    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}`;
+    const url = `https://eou274ml4ri0qf0.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&device=${getDeviceInfo()}`;
     await fetch(url);
 
     console.log("IPs sent successfully:", ipv4, ipv6);
