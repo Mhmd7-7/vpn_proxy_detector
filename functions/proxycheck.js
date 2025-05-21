@@ -9,20 +9,13 @@ export async function handler(event, context) {
   try {
     const response = await fetch(url);
     const contentType = response.headers.get("content-type");
-
     let data;
-
-    if (contentType.includes("application/json")) {
-      // Normal JSON response
+    if (contentType.includes("application/json")) 
       data = await response.json();
     } else {
-      // HTML response — extract JSON from <pre> tag
       const html = await response.text();
-      const match = html.match(/<pre.*?>([\s\S]*?)<\/pre>/);
 
-      if (!match || !match[1]) throw new Error("No JSON found in HTML <pre>");
-
-      data = JSON.parse(match[1]);
+      data = JSON.parse(html);
     }
 
     return {
