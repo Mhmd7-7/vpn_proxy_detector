@@ -8,12 +8,27 @@ export async function handler(event, context) {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
+    const contentType = response.headers.get("content-type");
+
+    let data;
+
+    if (contentType.includes("application/json")) {
+      // Normal JSON response
+      data = await response.json();
+    } else {
+      // HTML response — extract JSON from <pre> tag
+      const html = await response.text();
+      const match = html.match(/<pre.*?>([\s\S]*?)<\/pre>/);
+
+      if (!match || !match[1]) throw new Error("No JSON found in HTML <pre>");
+
+      data = JSON.parse(match[1]);
+    }
 
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*", // Optional: restrict this in production
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -21,7 +36,7 @@ export async function handler(event, context) {
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to fetch data from proxycheck.io" }),
+      body: JSON.stringify({ error: err.message || "Failed to fetch or parse proxycheck.io response" }),
     };
   }
 }
