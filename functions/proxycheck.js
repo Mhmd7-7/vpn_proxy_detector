@@ -14,8 +14,8 @@ export async function handler(event, context) {
       data = await response.json();
     } else {
       const html = await response.text();
-
-      data = JSON.parse(html);
+      const match = html.match(/<pre.*?>([\s\S]*?)<\/pre>/);
+      data = JSON.parse(match);
     }
 
     return {
