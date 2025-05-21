@@ -154,16 +154,7 @@ fetch("https://pro.ip-api.com/json/37.243.74.117?fields=66842623&key=ipapiq9SFY1
 function checkproxycheck(ip) {
     fetch(`/functions/proxycheck?ip=${ip}`)
       .then(res => res.json())
-      .then(data => {
-        const result = data[ip];
-        const isVPN = result.proxy === "yes";
-        const org = result.provider || result.asn || "غير معروف";
-        const country = result.isocode || result.country || "?";
-        addRow("proxycheck.io", country, org, isVPN);
-      })
-      .catch(err => {
-      console.error("proxycheck.io error", err);
-      });
+      console.log(res);
     }
 
     // API 5: ipdata.co 
