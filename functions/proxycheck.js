@@ -23,6 +23,7 @@ export async function handler(event, context) {
       if (!match || !match[1]) throw new Error("No JSON found in HTML <pre>");
 
       data = JSON.parse(match[1]);
+      console.log(data);
     }
 
     return {
