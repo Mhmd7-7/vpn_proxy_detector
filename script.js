@@ -117,6 +117,21 @@ function checkIpwhois(ip) {
     // API 2: ip-api.com
     function checkIPApi(ip) {
       fetch(`http://ip-api.com/json/${ip}?fields=status,country,org,proxy,hosting`)
+          headers: {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Accept-Language": "en-US,en;q=0.9,ar;q=0.8",
+    "Connection": "keep-alive",
+    "Origin": "https://members.ip-api.com",
+    "Referer": "https://members.ip-api.com/",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-site",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "sec-ch-ua": "\"Chromium\";v=\"136\", \"Google Chrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  }
         .then(res => res.json())
         .then(data => {
           const isVPN = data.proxy || data.hosting;
