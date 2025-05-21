@@ -116,8 +116,9 @@ function checkIpwhois(ip) {
 
     // API 2: ip-api.com
     function checkIPApi(ip) {
-      fetch(`http://ip-api.com/json/${ip}?fields=status,country,org,proxy,hosting`)
-          headers: {
+fetch("https://pro.ip-api.com/json/37.243.74.117?fields=66842623&key=ipapiq9SFY1Ic4", {
+  method: "GET",
+  headers: {
     "Accept": "*/*",
     "Accept-Encoding": "gzip, deflate, br, zstd",
     "Accept-Language": "en-US,en;q=0.9,ar;q=0.8",
@@ -132,11 +133,11 @@ function checkIpwhois(ip) {
     "sec-ch-ua-mobile": "?0",
     "sec-ch-ua-platform": "\"Windows\""
   }
-        .then(res => res.json())
-        .then(data => {
-          const isVPN = data.proxy || data.hosting;
-          addRow("ip-api.com", data.country, data.org, isVPN);
-        });
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error("Error:", error));
+
     }
 
     // API 3: ipinfo.io
