@@ -1,5 +1,3 @@
-// netlify/functions/proxycheck.js
-
 export async function handler(event, context) {
   const { ip } = event.queryStringParameters;
 
