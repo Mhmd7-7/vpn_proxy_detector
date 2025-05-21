@@ -24,7 +24,7 @@ export async function handler(event, context) {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
-      body: data,
+      body: response,
     };
   } catch (err) {
     return {
