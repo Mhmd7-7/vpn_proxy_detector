@@ -1,15 +1,13 @@
 exports.handler = async (event) => {
-  const ip = event.queryStringParameters.ip;
+  const url = event.queryStringParameters.ip;
   const apiKey = "l11151-636tc1-940138-06n954";
 
-  if (!ip) {
+  if (!url) {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: 'Missing "ip" parameter' }),
     };
   }
-
-  const url = `https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`;
 
   try {
     const response = await fetch(url);
