@@ -12,7 +12,15 @@ exports.handler = async (event) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
+  
+  const div = document.createElement('div');
 
+// Add text inside the div
+div.textContent = response;
+
+// Optionally add it to the document body or another element
+document.body.appendChild(div);
+  
     return {
       statusCode: 200,
       headers: {
