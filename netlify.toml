@@ -1,6 +1,7 @@
 [build]
-  functions = "/functions"
-[[redirects]] 
-  from = "/*" 
-  to = "/index.html" 
+  publish = "dist"
+  functions = "functions"
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
