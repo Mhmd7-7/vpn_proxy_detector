@@ -115,30 +115,18 @@ function checkIpwhois(ip) {
     }
 
     // API 2: ip-api.com
-    function checkIPApi(ip) {
-fetch("https://pro.ip-api.com/json/37.243.74.117?fields=66842623&key=ipapiq9SFY1Ic4", {
-  method: "GET",
-  headers: {
-    "Accept": "*/*",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Accept-Language": "en-US,en;q=0.9,ar;q=0.8",
-    "Connection": "keep-alive",
-    "Origin": "https://members.ip-api.com",
-    "Referer": "https://members.ip-api.com/",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-site",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    "sec-ch-ua": "\"Chromium\";v=\"136\", \"Google Chrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": "\"Windows\""
-  }
-})
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error("Error:", error));
+function checkIPApi(ip) {
+  fetch(`/.netlify/functions/bypass_CORS?url=https://pro.ip-api.com/json/${ip}?fields=66842623&key=ipapiq9SFY1Ic4`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // Example addRow usage (adjust based on your actual table structure)
+      addRow("ip-api.com", data.country, data.org || data.isp, data.proxy || false);
+    })
+    .catch(error => console.error("Error:", error));
+}
 
-    }
+
 
     // API 3: ipinfo.io
     function checkIpinfo(ip) {
@@ -156,11 +144,17 @@ function checkproxycheck(ip) {
     .then(res => res.json())
     .then(data => {
       console.log(data);
+      const info = data[ip]; // the proxycheck.io response is keyed by the IP
+      const isVPN = info?.proxy === "yes" || info?.type === "VPN";
+      const country = info?.country || "Unknown";
+      const org = info?.provider || "Unknown";
+      addRow("proxycheck.io", country, org, isVPN);
     })
     .catch(err => {
       console.error('Fetch error:', err);
     });
 }
+
 
 
 
