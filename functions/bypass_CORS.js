@@ -7,7 +7,14 @@ exports.handler = async (event) => {
     };
   }
   try {
-    const response = await fetch(url);
+const response = await fetch(url, {
+  method: 'GET',
+  headers: {
+    'accept': 'application/json',
+    'accept-language': 'en-US,en;q=0.9',
+  }
+});
+
     const data = await response.json();
 
     return {
