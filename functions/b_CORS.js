@@ -1,34 +1,32 @@
-const https = require('https');
-
 exports.handler = async (event) => {
-  const url = event.queryStringParameters.url;
+  const ip = event.queryStringParameters.ip;
+  const apiKey = 'YOUR_PROXYCHECK_KEY';
 
-  if (!url) {
+  if (!ip) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Missing "url" query param' }),
+      body: JSON.stringify({ error: 'Missing "ip" parameter' }),
     };
   }
 
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        resolve({
-          statusCode: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'
-          },
-          body: data
-        });
-      });
-    }).on('error', (err) => {
-      reject({
-        statusCode: 500,
-        body: JSON.stringify({ error: err.message }),
-      });
-    });
-  });
+  const url = `https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message }),
+    };
+  }
 };
