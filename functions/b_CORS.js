@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const https = require('https');
 
 exports.handler = async (event) => {
   const url = event.queryStringParameters.url;
@@ -10,22 +10,25 @@ exports.handler = async (event) => {
     };
   }
 
-  try {
-    const response = await fetch(url);
-    const data = await response.text(); // or .json() based on the content
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json', // adjust based on response
-      },
-      body: data,
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
-    };
-  }
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        resolve({
+          statusCode: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+          },
+          body: data
+        });
+      });
+    }).on('error', (err) => {
+      reject({
+        statusCode: 500,
+        body: JSON.stringify({ error: err.message }),
+      });
+    });
+  });
 };
