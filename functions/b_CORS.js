@@ -1,6 +1,6 @@
 exports.handler = async (event) => {
   const ip = event.queryStringParameters.ip;
-  const apiKey = 'YOUR_PROXYCHECK_KEY';
+  const apiKey = "l11151-636tc1-940138-06n954";
 
   if (!ip) {
     return {
