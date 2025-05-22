@@ -10,10 +10,6 @@ exports.handler = async (event) => {
 const response = await fetch(url, {
   method: 'GET',
     headers: {
-      ':authority': 'proxycheck.io',
-      ':method': 'GET',
-      ':path': '/v2/1.1.1.1?vpn=1&asn=1',
-      ':scheme': 'https',
       'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
       'accept-encoding': 'gzip, deflate, br, zstd',
       'accept-language': 'en-US,en;q=0.9,ar;q=0.8',
