@@ -149,13 +149,14 @@ fetch("https://pro.ip-api.com/json/37.243.74.117?fields=66842623&key=ipapiq9SFY1
           addRow("ipinfo.io", data.country, data.org, isVPN);
         });
     }
-
-    // i change  ipgeolocation.io to proxycheck.io fix the display error
 function checkproxycheck(ip) {
     const apiKey = "l11151-636tc1-940138-06n954";
-    const response = await fetch(`https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`);
-    const data = await response.json();
-    
+    const res = fetch(`https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`);
+        .then(res => res.json())
+        .then(data => {
+          const isVPN = data?.privacy?.vpn || false;
+          addRow("ipinfo.io", data.country, data.org, isVPN);
+        });
 }
 
 
