@@ -1,8 +1,6 @@
 [build]
   functions = "/functions"
-  publish = "dist"  # <-- or "public" or "build", based on your site generator
-
-[[redirects]]
-  from = "/api/*"
-  to = "/functions/:splat"
+[[redirects]] 
+  from = "/*" 
+  to = "/index.html" 
   status = 200
