@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
   const ip = event.queryStringParameters.ip;
-
+  const apiKey = "l11151-636tc1-940138-06n954";
   if (!ip) {
     return {
       statusCode: 400,
@@ -11,7 +11,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const response = await fetch(`https://proxycheck.io/v2/${ip}?key=YOUR_API_KEY&vpn=1`);
+    const response = await fetch(`https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`);
     const data = await response.json();
 
     return {
