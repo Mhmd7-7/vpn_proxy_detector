@@ -1,33 +1,27 @@
 exports.handler = async (event) => {
-  const url = event.queryStringParameters.ip;
+  const ip = event.queryStringParameters.ip;
   const apiKey = "l11151-636tc1-940138-06n954";
 
-  if (!url) {
+  if (!ip) {
     return {
       statusCode: 400,
       body: JSON.stringify({ error: 'Missing "ip" parameter' }),
     };
   }
 
+  const url = `https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`;
+
   try {
     const response = await fetch(url);
     const data = await response.json();
-  
-  const div = document.createElement('div');
 
-// Add text inside the div
-div.textContent = response;
-
-// Optionally add it to the document body or another element
-document.body.appendChild(div);
-  
     return {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-      body: response
+      body: JSON.stringify(data),
     };
   } catch (err) {
     return {
