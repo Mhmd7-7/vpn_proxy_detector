@@ -152,7 +152,7 @@ fetch("https://pro.ip-api.com/json/37.243.74.117?fields=66842623&key=ipapiq9SFY1
     
 async function checkproxycheck(ip) {
   const apiKey = "l11151-636tc1-940138-06n954";
-  fetch('/functions/proxy?url=https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1')
+  fetch('/functions/b_CORS?url=https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1')
   .then(res => res.json())
   .then(data => {
     console.log(data);
