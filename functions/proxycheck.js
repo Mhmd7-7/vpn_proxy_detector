@@ -1,33 +1,28 @@
-export async function handler(event, context) {
-  const { ip } = event.queryStringParameters;
+const fetch = require('node-fetch');
 
-  const apiKey = "l11151-636tc1-940138-06n954";
-  const url = `https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1&asn=1`;
+exports.handler = async (event) => {
+  const ip = event.queryStringParameters.ip;
+
+  if (!ip) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'IP address is required' }),
+    };
+  }
 
   try {
-    const response = await fetch(url);
-    const contentType = response.headers.get("content-type");
-    let data;
-    if (contentType.includes("application/json")) 
-      data = await response.json();
-    } else {
-      const html = await response.text();
-      const match = html.match(/<pre.*?>([\s\S]*?)<\/pre>/);
-      data = JSON.parse(match);
-    }
+    const response = await fetch(`https://proxycheck.io/v2/${ip}?key=YOUR_API_KEY&vpn=1`);
+    const data = await response.json();
 
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-      body: response,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     };
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message || "Failed to fetch or parse proxycheck.io response" }),
+      body: JSON.stringify({ error: 'Failed to fetch proxy check data' }),
     };
   }
-}
+};
