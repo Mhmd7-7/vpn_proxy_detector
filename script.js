@@ -140,20 +140,24 @@ function checkIPApi(ip) {
     
 function checkproxycheck(ip) {
   const apiKey = "l11151-636tc1-940138-06n954";
-  fetch(`/.netlify/functions/bypass_CORS?url=https://proxycheck.io/apiproxy/${ip}?vpn=1&asn=1&tag=proxycheck.io`)
+  fetch(`/.netlify/functions/bypass_CORS?url=https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
-      const info = data[ip]; // the proxycheck.io response is keyed by the IP
-      const isVPN = info?.proxy === "yes" || info?.type === "VPN";
-      const country = info?.country || "Unknown";
-      const org = info?.provider || "Unknown";
+      const info = data[ip];
+      if (!info) {
+        console.warn("No info returned for IP:", ip);
+        return;
+      }
+      const isVPN = info.proxy === "yes" || info.type === "VPN";
+      const country = info.country || "Unknown";
+      const org = info.organisation || info.provider || "Unknown";
       addRow("proxycheck.io", country, org, isVPN);
     })
     .catch(err => {
       console.error('Fetch error:', err);
     });
 }
+
 
 
 
