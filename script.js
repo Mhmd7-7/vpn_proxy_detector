@@ -152,14 +152,10 @@ fetch("https://pro.ip-api.com/json/37.243.74.117?fields=66842623&key=ipapiq9SFY1
 
     // i change  ipgeolocation.io to proxycheck.io fix the display error
 function checkproxycheck(ip) {
-  fetch(`/functions/proxycheck?ip=${ip}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data); // Log the JSON response
-    })
-    .catch(error => {
-      console.error("Error checking proxy:", error);
-    });
+    const apiKey = "l11151-636tc1-940138-06n954";
+    const response = await fetch(`https://proxycheck.io/v2/${ip}?key=${apiKey}&vpn=1`);
+    const data = await response.json();
+    
 }
 
 
