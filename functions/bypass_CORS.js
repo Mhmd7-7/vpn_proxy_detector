@@ -38,7 +38,7 @@ const response = await fetch(url, {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/json',
       },
-      body: data,
+      body: JSON.stringify(data),
     };
   } catch (err) {
     return {
