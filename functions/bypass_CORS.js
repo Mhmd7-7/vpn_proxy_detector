@@ -36,7 +36,7 @@ const response = await fetch(url, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Cache-Control': 'no-cache',
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/html',
       },
       body: JSON.stringify(data),
     };
