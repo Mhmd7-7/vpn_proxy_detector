@@ -29,7 +29,7 @@ const response = await fetch(url, {
       }
 });
 
-    const data = await response.json();
+    const data = await response;
 
     return {
       statusCode: 200,
@@ -38,7 +38,7 @@ const response = await fetch(url, {
         'Cache-Control': 'no-cache',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: data,
     };
   } catch (err) {
     return {
