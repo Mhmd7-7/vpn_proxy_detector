@@ -30,7 +30,6 @@ const response = await fetch(url, {
 });
 
     const data = await response.text();
-
     return {
       statusCode: 200,
       headers: {
@@ -38,7 +37,7 @@ const response = await fetch(url, {
         'Cache-Control': 'no-cache',
         'Content-Type': 'text/html',
       },
-      body: JSON.stringify(data),
+      body: data,
     };
   } catch (err) {
     return {
